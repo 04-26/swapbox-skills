@@ -1,0 +1,24 @@
+{
+  "name": "swapbox-skills",
+  "description": "SwapBox skills for multi-chain DeFi operations — token price queries, DEX swaps, and cross-chain bridges across 30+ blockchains",
+  "version": "1.0.0",
+  "author": {
+    "name": "SwapBox"
+  },
+  "homepage": "https://swapbox.io",
+  "repository": "https://github.com/AboPlus/swapbox-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "swapbox",
+    "dex",
+    "web3",
+    "defi",
+    "swap",
+    "bridge",
+    "token",
+    "blockchain",
+    "price",
+    "cross-chain"
+  ],
+  "skills": ["./skills/"]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "swapbox-skills",
+  "version": "1.0.0",
+  "skills": [
+    "./skills/"
+  ],
+  "keywords": [
+    "skills",
+    "swapbox",
+    "dex",
+    "web3",
+    "defi",
+    "swap",
+    "bridge",
+    "token",
+    "blockchain",
+    "price",
+    "cross-chain"
+  ]
+}

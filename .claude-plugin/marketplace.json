@@ -1,0 +1,12 @@
+{
+  "name": "swapbox-skills",
+  "display_name": "SwapBox Skills",
+  "description": "Multi-chain DeFi skills for AI agents — query token prices, execute swaps, and bridge assets across 30+ blockchains via SwapBox",
+  "version": "1.0.0",
+  "author": "SwapBox",
+  "homepage": "https://swapbox.io",
+  "repository": "https://github.com/AboPlus/swapbox-skills",
+  "license": "Apache-2.0",
+  "categories": ["web3", "defi", "blockchain"],
+  "tags": ["price", "swap", "bridge", "dex", "multi-chain", "token"]
+}
