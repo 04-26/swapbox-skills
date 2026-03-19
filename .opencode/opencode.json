@@ -3,7 +3,6 @@
   "instructions": [
     "AGENTS.md",
     "skills/swapbox-price/SKILL.md",
-    "skills/swapbox-swap/SKILL.md",
-    "skills/swapbox-bridge/SKILL.md"
+    "skills/swapbox-swap/SKILL.md"
   ]
 }

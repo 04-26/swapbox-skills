@@ -36,15 +36,14 @@ Enable SwapBox skills in Codex via native skill discovery. Just clone and symlin
 ls -la ~/.agents/skills/swapbox-skills
 ```
 
-You should see the three skill directories: `swapbox-price`, `swapbox-swap`, `swapbox-bridge`.
+You should see the two skill directories: `swapbox-price`, `swapbox-swap`.
 
 ## Available Skills
 
 | Skill | When to Use |
 |-------|-------------|
 | `swapbox-price` | Token price queries against USDT across 30+ chains |
-| `swapbox-swap` | On-chain DEX swap execution (Coming Soon) |
-| `swapbox-bridge` | Cross-chain bridge transfers (Coming Soon) |
+| `swapbox-swap` | Swap execution (same-chain & cross-chain) |
 
 ## Updating
 

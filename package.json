@@ -1,7 +1,7 @@
 {
   "name": "swapbox-skills",
   "version": "1.0.0",
-  "description": "SwapBox skills for AI coding assistants — multi-chain token price query, DEX swap, and cross-chain bridge across 30+ blockchains",
+  "description": "SwapBox skills for AI coding assistants — multi-chain token price query and swap execution (same-chain & cross-chain) across 30+ blockchains",
   "keywords": [
     "claude-code",
     "skills",
@@ -38,7 +38,7 @@
     ".cursor-plugin/"
   ],
   "scripts": {
-    "postinstall": "echo '\\n swapbox-skills installed!\\n Skills: swapbox-price, swapbox-swap, swapbox-bridge\\n Docs: https://swapbox.io\\n'"
+    "postinstall": "echo '\\n swapbox-skills installed!\\n Skills: swapbox-price, swapbox-swap\\n Docs: https://swapbox.io\\n'"
   },
   "engines": {
     "node": ">=18"

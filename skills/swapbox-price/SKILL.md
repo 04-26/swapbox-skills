@@ -24,8 +24,7 @@ Query real-time token/USDT exchange rates across 30+ blockchains using SwapBox A
 
 **Do NOT use this skill when the user:**
 
-- Wants to execute a swap/trade → use `swapbox-swap` (coming soon)
-- Wants to bridge tokens across chains → use `swapbox-bridge` (coming soon)
+- Wants to execute a swap/trade (same-chain or cross-chain) → use `swapbox-swap`
 - Asks about wallet balances, transaction history, or gas fees
 
 ## Keyword Glossary

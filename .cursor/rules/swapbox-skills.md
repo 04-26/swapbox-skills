@@ -8,13 +8,12 @@ alwaysApply: false
 
 当用户的请求匹配以下关键词时，请读取并遵循对应的 SKILL.md 文件中的完整指令：
 
-## 技能路由
+## Skill Routing
 
-| 用户意图 | 读取文件 |
+| User Intent | Read File |
 |---------|---------|
-| 查询代币价格、汇率、交易对 | `skills/swapbox-price/SKILL.md` |
-| 本链兑换（Coming Soon） | `skills/swapbox-swap/SKILL.md` |
-| 跨链桥接（Coming Soon） | `skills/swapbox-bridge/SKILL.md` |
+| Token price / exchange rate / trading pair query | `skills/swapbox-price/SKILL.md` |
+| Swap execution (same-chain & cross-chain) | `skills/swapbox-swap/SKILL.md` |
 
 ## 触发关键词
 

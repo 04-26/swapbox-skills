@@ -1,24 +1,21 @@
 # SwapBox Skills — Agent Instructions
 
-This is a **SwapBox skill collection** providing 3 skills for multi-chain DeFi operations: token price queries, on-chain swaps, and cross-chain bridges across 30+ blockchains.
+This is a **SwapBox skill collection** providing 2 skills for multi-chain DeFi operations: token price queries and swap execution (same-chain and cross-chain) across 30+ blockchains.
 
-All skills interact directly with SwapBox HTTP APIs (https://swapbox.io). For swap execution, the **swapbox-wallet** CLI (`cli/bin/swapbox-wallet.js`) is used for transaction signing.
+All skills interact directly with SwapBox HTTP APIs (https://swapbox.io). For swap execution, the skill returns tx data for external signing and broadcasting by the user or their backend service.
 
 ## Available Skills
 
 | Skill | Purpose | When to Use |
 |-------|---------|-------------|
 | swapbox-price | Multi-chain token/USDT price query | User asks about token prices, exchange rates, trading pairs; user asks "ETH 在 Ethereum 上多少钱", "查询 BSC 上 CAKE 的 USDT 价格", "what's the price of SOL", "how much is 1 BNB in USDT" |
-| swapbox-swap | On-chain DEX swap execution | User wants to swap/trade/buy/sell tokens on the same chain; user asks "swap ETH for USDT", "兑换 BNB 为 USDT" |
-| swapbox-bridge | Cross-chain bridge transfer | User wants to transfer tokens across different blockchains; user asks "bridge ETH from Ethereum to Arbitrum", "跨链转 USDT 到 BSC" — **Coming Soon** |
+| swapbox-swap | Swap execution (same-chain & cross-chain) | User wants to swap/trade/buy/sell tokens (same-chain) or move/swap assets across chains (cross-chain) |
 
 ## Architecture
 
-- **skills/** — 3 SwapBox skill definitions (each is a `SKILL.md` with YAML frontmatter + API reference)
+- **skills/** — 2 SwapBox skill definitions (each is a `SKILL.md` with YAML frontmatter + API reference)
 - **skills/swapbox-price/** — Token price query skill (active)
-- **skills/swapbox-swap/** — On-chain swap skill (active; uses cli for signing)
-- **skills/swapbox-bridge/** — Cross-chain bridge skill (coming soon)
-- **cli/** — swapbox-wallet CLI for wallet management and transaction signing
+- **skills/swapbox-swap/** — Swap skill (same-chain & cross-chain; returns tx data for external signing)
 
 ## Skill Discovery
 

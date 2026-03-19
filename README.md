@@ -1,14 +1,13 @@
 # SwapBox Skills
 
-Skills for AI agents to query token prices, execute swaps, and bridge assets across 30+ blockchains via [SwapBox](https://swapbox.io).
+Skills for AI agents to query token prices and execute swaps (same-chain & cross-chain) across 30+ blockchains via [SwapBox](https://swapbox.io).
 
 ## Available Skills
 
 | Skill | Purpose | Status |
 |-------|---------|--------|
 | **swapbox-price** | Query token/USDT exchange rates on any supported chain | Active |
-| **swapbox-swap** | Execute on-chain token swaps via DEX aggregator | Coming Soon |
-| **swapbox-bridge** | Bridge tokens across different blockchains | Coming Soon |
+| **swapbox-swap** | Execute swaps (same-chain & cross-chain) via aggregator | Active |
 
 ## Supported Chains
 
@@ -92,10 +91,8 @@ swapbox-skills/
 │   │   ├── SKILL.md
 │   │   └── references/
 │   │       └── api-reference.md
-│   ├── swapbox-swap/            # On-chain swap (Coming Soon)
+│   ├── swapbox-swap/            # Swap (same-chain & cross-chain)
 │   │   └── SKILL.md
-│   └── swapbox-bridge/          # Cross-chain bridge (Coming Soon)
-│       └── SKILL.md
 ├── .cursor-plugin/              # Cursor integration
 ├── .claude-plugin/              # Claude Code integration
 ├── .codex/                      # Codex CLI integration

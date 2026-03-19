@@ -23,7 +23,7 @@ Execute token swaps on the same blockchain using SwapBox's DEX aggregator. Full 
 **Do NOT use this skill:**
 
 - For price queries only → use `swapbox-price`
-- For cross-chain transfers → use `swapbox-bridge`
+- (This skill supports both same-chain and cross-chain execution)
 
 ## Complete Swap Flow
 
