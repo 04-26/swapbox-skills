@@ -311,3 +311,228 @@ curl -s -X POST 'https://swapbox.io/api/swap/route' \
 | Other | Various errors | Report `msg` to user |
 
 If `data` is `null` or empty array `[]`, the trading pair has no available routes on this chain.
+
+---
+
+## 4. POST /swap/approve — Check & Build ERC-20 Approval Transaction
+
+Checks whether an ERC-20 token needs approval for the selected route. If already approved, returns `isApproved = true`. If not, returns `isApproved = false` and returns the approval transaction **txData** in the response `data` field for signing.
+
+**Important**: Do NOT hardcode parameters. `dex`, `channel`, and `approveAddress` must come from the selected route (`best == 1`) returned by `/swap/route`. Token identifiers (`chainId`, `assetId`, `contractAddress`) must come from `/asset/query` for the selected `fromChain`.
+
+### Request
+
+```bash
+curl -s -X POST 'https://swapbox.io/api/swap/approve' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "dex": "OKX",
+    "channel": "OKX",
+    "fromChain": "BSC",
+    "fromAddress": "0xD06A23cC78e13CFCf52fA34232e449E13573F5FE",
+    "chainId": 102,
+    "assetId": 0,
+    "amount": 1,
+    "contractAddress": "0x55d398326f99059ff775485246999027b3197955",
+    "approveAddress": "0x75ab1d50bedbd32b6113941fcf5359787a4bbef4"
+  }'
+```
+
+### Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `dex` | string | Yes | DEX name from `/swap/route` (e.g. `"OKX"`) |
+| `channel` | string | Yes | Channel name from `/swap/route` (e.g. `"OKX"`) |
+| `fromChain` | string | Yes | Source chain name (e.g. `"BSC"`) |
+| `fromAddress` | string | Yes | User wallet address (owner) |
+| `chainId` | number | Yes | Source token chainId |
+| `assetId` | number | Yes | Source token assetId |
+| `amount` | number | Yes | Approval amount (same unit as `/swap/route` request `amount`) |
+| `contractAddress` | string | Yes | ERC-20 token contract address |
+| `approveAddress` | string | Yes | Spender address (route `approveAddress`) |
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `code` | number | 0 = success |
+| `msg` | string | Response message |
+| `data.isApproved` | boolean | `true` = already approved; `false` = needs approval |
+| `data` | object | When `isApproved = false`, this `data` object is the approval transaction **txData** for signing |
+
+**Approval txData `from/to` rule**:
+
+- `from` = user wallet address (`fromAddress`)
+- `to` = approve contract address (`approveAddress`)
+
+Usage:
+
+- If `isApproved == true` → skip approval.
+- If `isApproved == false` → let user sign & broadcast the returned `data` (approval txData) first, wait for confirmation, then call `/swap/tx/encode`.
+
+---
+
+## 5. POST /swap/tx/encode — Get Transaction Data for Signing
+
+After selecting a route from `/swap/route`, call this endpoint to get the raw transaction data (txData) for signing. Used for both same-chain swap and cross-chain bridge.
+
+### Request
+
+```bash
+curl -s -X POST 'https://swapbox.io/api/swap/tx/encode' \
+  -H 'Content-Type: application/json' \
+  -H 'language: en' \
+  -H 'origin: https://swapbox.io' \
+  -H 'referer: https://swapbox.io/' \
+  -d '{
+    "platform": "",
+    "orderId": "<orderId from route>",
+    "dex": "OKX",
+    "channel": "OKX",
+    "fromChain": "BSC",
+    "toChain": "BSC",
+    "fromAddress": "0xD06A23cC78e13CFCf52fA34232e449E13573F5FE",
+    "toAddress": "0xD06A23cC78e13CFCf52fA34232e449E13573F5FE",
+    "btcPubKey": "",
+    "chainId": 102,
+    "assetId": 1,
+    "contractAddress": "",
+    "amount": "0.001",
+    "slippage": "0.5",
+    "fee": "0.00341365100727830346",
+    "minReceiveAmount": "0.67931655044838238854",
+    "swapChainId": 102,
+    "swapAssetId": 0,
+    "swapContractAddress": "0x55d398326f99059ff775485246999027b3197955",
+    "path": null,
+    "toTokenAmount": "0.682730201455660692",
+    "gmgnRoute": null
+  }'
+```
+
+### Request Body (from route selection)
+
+All fields come from the selected route in `/swap/route` response. Use the **best** route (`best == 1`).
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `platform` | string | No | Platform identifier |
+| `orderId` | string | Yes | **From route response** — unique order ID |
+| `dex` | string | Yes | DEX name from route (e.g., "OKX") |
+| `channel` | string | Yes | Channel from route |
+| `fromChain` | string | Yes | Source chain name |
+| `toChain` | string | Yes | Destination chain name |
+| `fromAddress` | string | Yes | **User's wallet address** |
+| `toAddress` | string | Yes | **User's wallet address** (receiver) |
+| `btcPubKey` | string | No | BTC public key (for BTC chains) |
+| `chainId` | number | Yes | Source token chainId |
+| `assetId` | number | Yes | Source token assetId |
+| `contractAddress` | string | Yes | Source token contract (empty for native) |
+| `amount` | string | Yes | Swap amount |
+| `slippage` | string | Yes | Slippage tolerance (e.g., "0.5") |
+| `fee` | string | Yes | Fee from route |
+| `minReceiveAmount` | string | Yes | Min receive from route |
+| `swapChainId` | number | Yes | Target token chainId |
+| `swapAssetId` | number | Yes | Target token assetId |
+| `swapContractAddress` | string | Yes | Target token contract |
+| `path` | array | No | Swap path (can be null) |
+| `toTokenAmount` | string | Yes | Expected output from route |
+| `gmgnRoute` | object | No | GMGN route (can be null) |
+
+### Response
+
+Returns `txData` object with transaction fields for signing: `to`, `data`, `value`, `gasLimit`, `gasPrice` or `maxFeePerGas`/`maxPriorityFeePerGas`, `chainId`, etc.
+
+---
+
+## 6. POST /swap/tx/save — Save Order Before Signing
+
+Saves the swap order to SwapBox backend. **Must be called after encode and before broadcasting.** Call this after getting txData from encode.
+
+### Request
+
+```bash
+curl -s -X POST 'https://swapbox.io/api/swap/tx/save' \
+  -H 'Content-Type: application/json' \
+  -H 'language: en' \
+  -H 'origin: https://swapbox.io' \
+  -H 'referer: https://swapbox.io/' \
+  -d '{
+    "platform": "",
+    "orderId": "<orderId>",
+    "dex": "OKX",
+    "channel": "OKX",
+    "fromChain": "BSC",
+    "toChain": "BSC",
+    "fromAddress": "0xD06A23cC78e13CFCf52fA34232e449E13573F5FE",
+    "toAddress": "0xD06A23cC78e13CFCf52fA34232e449E13573F5FE",
+    "btcPubKey": "",
+    "chainId": 102,
+    "assetId": 1,
+    "contractAddress": "",
+    "amount": "0.001",
+    "fee": "0.00341365100727830346",
+    "toTokenAmount": "0.682730201455660692",
+    "slippage": "0.5",
+    "partnerOrderId": "",
+    "minReceiveAmount": "0.674392805384530135",
+    "terminal": "Chrome",
+    "swapChainId": 102,
+    "swapAssetId": 0,
+    "swapContractAddress": "0x55d398326f99059ff775485246999027b3197955",
+    "swapType": "",
+    "blockHeight": ""
+  }'
+```
+
+### Request Body
+
+Same structure as encode, with additional fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `partnerOrderId` | string | Partner order ID (optional) |
+| `terminal` | string | Client identifier (e.g., "Chrome", "SwapBox-CLI") |
+| `swapType` | string | Swap type (optional) |
+| `blockHeight` | string | Block height (optional) |
+
+---
+
+## 7. POST /swap/tx/hash/update — Update Order with Transaction Hash
+
+After broadcasting the signed transaction, call this endpoint to register the txHash with SwapBox backend.
+
+### Request
+
+```bash
+curl -s -X POST 'https://swapbox.io/api/swap/tx/hash/update' \
+  -H 'Content-Type: application/json' \
+  -H 'language: en' \
+  -H 'origin: https://swapbox.io' \
+  -H 'referer: https://swapbox.io/' \
+  -d '{
+    "orderId": "f8b8a38d-b0af-45c7-9248-6463e7586546",
+    "txHash": "0x2f086f902fb7d4b8b6c73558d36bd4d344cdfdce438db4eb4d8105f442ca65e2"
+  }'
+```
+
+### Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `orderId` | string | Yes | Order ID from route/encode/save |
+| `txHash` | string | Yes | Transaction hash returned by RPC broadcast |
+
+---
+
+## 8. Chain Config — RPC URL for Broadcasting
+
+The `rpcUrl` for broadcasting transactions is available in the chain configuration. Fetch chain list via `GET /config/chains` — each chain object may include `configs.rpcUrl` or similar. Use the chain's RPC URL to call `eth_sendRawTransaction` (EVM) or equivalent for Solana.
+
+**EVM broadcast** (JSON-RPC):
+```bash
+curl -s -X POST '<rpcUrl>' \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","method":"eth_sendRawTransaction","params":["<signedTx>"],"id":1}'
+```

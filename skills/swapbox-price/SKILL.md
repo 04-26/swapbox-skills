@@ -16,11 +16,11 @@ Query real-time token/USDT exchange rates across 30+ blockchains using SwapBox A
 
 **Use this skill when the user:**
 
-- Asks for a token price (e.g., "ETH 多少钱", "price of SOL", "BNB 的 USDT 价格")
+- Asks for a token price (e.g., "ETH price", "price of SOL", "BNB/USDT price")
 - Asks about exchange rates or trading pairs
 - Wants to know how much a token is worth in USDT
 - Asks what chains or tokens are supported
-- Asks "查询 Ethereum 上 ETH 兑 USDT 的价格"
+- Asks "ETH/USDT price on Ethereum"
 
 **Do NOT use this skill when the user:**
 
@@ -32,15 +32,15 @@ Query real-time token/USDT exchange rates across 30+ blockchains using SwapBox A
 
 | Chinese | English | Context |
 |---------|---------|---------|
-| 价格 | price | Token price query |
-| 交易对 | trading pair | Token/USDT pair |
-| 兑换率 | exchange rate | Conversion rate |
-| 滑点 | slippage | Price deviation tolerance |
-| 链 | chain/blockchain | Blockchain network |
-| 代币 / 币 | token | Cryptocurrency token |
-| 最优通道 | best route | Optimal swap channel |
-| 跨链 | cross-chain | Between different blockchains |
-| 本链 | same-chain | Within the same blockchain |
+| price | price | Token price query |
+| trading pair | trading pair | Token/USDT pair |
+| exchange rate | exchange rate | Conversion rate |
+| slippage | slippage | Price deviation tolerance |
+| chain | chain/blockchain | Blockchain network |
+| token / coin | token | Cryptocurrency token |
+| best route | best route | Optimal swap channel |
+| cross-chain | cross-chain | Between different blockchains |
+| same-chain | same-chain | Within the same blockchain |
 
 ## Operation Flow
 
@@ -247,7 +247,7 @@ For multi-token queries, display as a table.
 
 ## Complete Example
 
-**User**: "查询 Ethereum 上 ETH 的 USDT 价格"
+**User**: "ETH/USDT price on Ethereum"
 
 **Agent workflow:**
 
